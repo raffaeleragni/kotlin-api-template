@@ -1,0 +1,25 @@
+<?xml version="1.1" encoding="UTF-8" standalone="no"?>
+<databaseChangeLog logicalFilePath="db/changelog_initial.xml" xmlns="http://www.liquibase.org/xml/ns/dbchangelog" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.5.xsd">
+
+  <changeSet id="table_sample" author="migrations">
+    <createTable tableName="sample">
+      <column name="id" type="BIGINT">
+        <constraints nullable="false" />
+      </column>
+      <column name="created_at" type="TIMESTAMP" valueComputed="CURRENT_TIMESTAMP" defaultValueComputed="CURRENT_TIMESTAMP">
+        <constraints nullable="false" />
+      </column>
+      <column name="created_by" type="VARCHAR" value="system" defaultValue="system">
+        <constraints nullable="false" />
+      </column>
+      <column name="updated_at" type="TIMESTAMP" valueComputed="CURRENT_TIMESTAMP" defaultValueComputed="CURRENT_TIMESTAMP">
+        <constraints nullable="false" />
+      </column>
+      <column name="updated_by" type="VARCHAR" value="system" defaultValue="system">
+        <constraints nullable="false" />
+      </column>
+    </createTable>
+    <addPrimaryKey columnNames="id" constraintName="pk_sample" tableName="sample" />
+  </changeSet>
+
+</databaseChangeLog>
