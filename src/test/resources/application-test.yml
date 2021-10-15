@@ -1,0 +1,16 @@
+spring:
+  application:
+    version: test-version
+  main:
+    banner-mode: "OFF"
+
+  datasource:
+    url: jdbc:postgresql://${API_DB_HOSTNAME:localhost}/${API_DB_NAME:api_test}?socketTimeout=60&connectTimeout=10
+
+  liquibase:
+    enabled: true
+    change-log: classpath:/db/changelog.xml
+
+localstack:
+  region: "eu-central-1"
+  endpoint: "http://localhost:4566"
