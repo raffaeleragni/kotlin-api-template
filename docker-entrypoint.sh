@@ -24,7 +24,9 @@ else
   # Custom profiles configuration for deployment affinity
   [ ! -z "${DEPLOYMENT_AFFINITY}" ] && profile=${profile},${affinity}
 
-  args="${args} -Dspring.profiles.active=${profile} -jar app.jar"
+  args="${args} -Dspring.profiles.active=${profile}"
+  args="${args} -Dnetworkaddress.cache.ttl=${NETWORK_ADDRESS_CACHE_TTL:=60}"
+  args="${args} -jar app.jar"
   echo "Command will be: \"${args}\""
 
   set -- ${args}
