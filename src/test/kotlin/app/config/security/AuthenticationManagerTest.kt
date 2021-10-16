@@ -1,4 +1,4 @@
-package app.security
+package app.config.security
 
 import io.jsonwebtoken.ExpiredJwtException
 import org.hamcrest.CoreMatchers.`is`

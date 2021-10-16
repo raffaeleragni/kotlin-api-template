@@ -1,4 +1,4 @@
-package app.security
+package app.config.security
 
 import io.jsonwebtoken.Claims
 import io.jsonwebtoken.Header
