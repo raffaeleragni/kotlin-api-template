@@ -8,7 +8,7 @@ import org.springframework.stereotype.Component
 @Component
 class Version: HealthIndicator {
   @Value("\${spring.application.version}")
-  var applicationVersion: String? = null
+  lateinit var applicationVersion: String
 
   override fun health(): Health =
     Health.up().withDetail("version", applicationVersion).build()
