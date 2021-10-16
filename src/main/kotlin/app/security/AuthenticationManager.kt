@@ -14,7 +14,8 @@ import java.util.*
 @Component
 class AuthenticationManager: ReactiveAuthenticationManager {
   override fun authenticate(authentication: Authentication?): Mono<Authentication> {
-    val header = authentication?.credentials.toString()
+    val authentication = authentication?: return Mono.empty()
+    val header = authentication.credentials.toString()
     if (!isValidHttpHeader(header))
       return Mono.empty()
 
@@ -22,7 +23,7 @@ class AuthenticationManager: ReactiveAuthenticationManager {
     var tokenWithoutSig = extractJWTHeaderAndBodyFromHttpHeader(header)
     val token = parse(tokenWithoutSig)
 
-    return Mono.just(PreAuthenticatedAuthenticationToken(authentication?.principal, rolesFromToken(token)))
+    return Mono.just(PreAuthenticatedAuthenticationToken(authentication.principal, rolesFromToken(token)))
   }
 }
 
