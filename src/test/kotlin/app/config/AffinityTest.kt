@@ -33,8 +33,8 @@ class AffinityTest {
     "API",
     "NONE"
   )
-  fun `queue affinity`(affinity: Affinity) {
-    val map = mapOf("value" to affinity)
+  fun `queue affinity`(case: Affinity) {
+    val map = mapOf("value" to case)
 
     val affinity = DeploymentAffinityCondition()
     val environment = mock<Environment> {

@@ -199,6 +199,11 @@
             <version>${retrofit.version}</version>
         </dependency>
         <dependency>
+            <groupId>com.squareup.retrofit2</groupId>
+            <artifactId>converter-scalars</artifactId>
+            <version>${retrofit.version}</version>
+        </dependency>
+        <dependency>
             <groupId>org.postgresql</groupId>
             <artifactId>postgresql</artifactId>
             <version>42.2.23</version>
@@ -278,6 +283,11 @@
         <dependency>
             <groupId>org.liquibase</groupId>
             <artifactId>liquibase-core</artifactId>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>com.squareup.okhttp3</groupId>
+            <artifactId>mockwebserver</artifactId>
             <scope>test</scope>
         </dependency>
     </dependencies>

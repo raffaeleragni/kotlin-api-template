@@ -1,16 +1,13 @@
 package app.config
 
 import app.test.IntegrationTest
-import com.fasterxml.jackson.databind.JsonNode
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.jayway.jsonpath.JsonPath
 import org.hamcrest.CoreMatchers.`is`
 import org.hamcrest.MatcherAssert.assertThat
 import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.boot.web.server.LocalServerPort
-import org.springframework.test.context.ActiveProfiles
 import org.springframework.web.client.RestTemplate
 import java.net.URI
 
@@ -27,7 +24,6 @@ class HealthVersionIT {
     val uri = URI("http://localhost:$randomServerPort/health/check");
 
     val response = restTemplate.getForEntity(uri, String::class.java);
-    val json = objectMapper?.readValue(response.body, JsonNode::class.java)
 
     val version = JsonPath.read<String>(response.body, "\$.components.version.details.version");
     assertThat("Version returned is the one defined in test profile", version, `is`("test-version"));

@@ -9,7 +9,6 @@ import org.springframework.security.core.Authentication
 import org.springframework.security.web.authentication.preauth.PreAuthenticatedAuthenticationToken
 import org.springframework.stereotype.Component
 import reactor.core.publisher.Mono
-import java.util.*
 
 @Component
 class AuthenticationManager: ReactiveAuthenticationManager {
