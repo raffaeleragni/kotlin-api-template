@@ -45,8 +45,6 @@ spring:
     host: ${API_REDIS_HOST:localhost}
     port: ${API_REDIS_PORT:6379}
     password: ${API_REDIS_PASSWORD:}
-    default:
-      key-expire: ${API_REDIS_DEFAULT_KEY_EXPIRE_SECS:86400}
     lettuce:
       pool:
         max-active: 200

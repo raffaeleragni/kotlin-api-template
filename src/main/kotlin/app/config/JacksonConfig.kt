@@ -6,6 +6,7 @@ import com.fasterxml.jackson.core.JsonParser
 import com.fasterxml.jackson.databind.*
 import com.fasterxml.jackson.databind.module.SimpleModule
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule
+import com.fasterxml.jackson.module.kotlin.KotlinModule
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 import org.springframework.context.annotation.Primary
@@ -51,6 +52,8 @@ class JacksonConfig {
     mapper.setSerializationInclusion(JsonInclude.Include.NON_NULL)
     mapper.configure(DeserializationFeature.READ_UNKNOWN_ENUM_VALUES_AS_NULL, true)
     mapper.configure(MapperFeature.ACCEPT_CASE_INSENSITIVE_ENUMS, true)
+
+    mapper.registerModule(KotlinModule())
 
     return mapper
   }
