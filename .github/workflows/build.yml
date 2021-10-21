@@ -1,0 +1,34 @@
+name: build
+on:
+  push:
+    branches:
+      - master
+    tags:
+      - '*'
+  pull_request:
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Cache docker images
+        uses: satackey/action-docker-layer-caching@v0.0.11
+        continue-on-error: true
+
+      - name: Cache multiple paths
+        uses: actions/cache@v2
+        with:
+          key: cache
+          restore-keys: cache
+          path: |
+            ~/.m2                                                                                                                                                                            
+            ~/.sdkman                                                                                                                                                                        
+                                                                                                                                                                                             
+      - name: Checkout
+        uses: actions/checkout@master
+      - name: Build
+        run: |
+          export MAVEN_OPTS=-Dmaven.artifact.threads=50 
+          ./build.sh
+      - name: clean pending images
+        run: docker image prune -f
+
