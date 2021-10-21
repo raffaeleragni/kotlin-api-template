@@ -13,7 +13,7 @@ import reactor.core.publisher.Mono
 @Configuration
 @EnableWebFluxSecurity
 @EnableReactiveMethodSecurity
-class WebSecurityConfig(val manager: AuthenticationManager) {
+class WebSecurityConfig(val manager: AuthenticationManager, val repo: SecurityContextRepository) {
 
   @Bean
   fun securityWebFilterChain(http: ServerHttpSecurity): SecurityWebFilterChain {
@@ -25,8 +25,12 @@ class WebSecurityConfig(val manager: AuthenticationManager) {
       .formLogin().disable()
       .httpBasic().disable()
       .authenticationManager(manager)
+      .securityContextRepository(repo)
       .authorizeExchange()
       .pathMatchers(HttpMethod.OPTIONS).permitAll()
+      .pathMatchers("/swagger-ui/**").permitAll()
+      .pathMatchers("/swagger-resources/**").permitAll()
+      .pathMatchers("/v2/api-docs/**").permitAll()
       .pathMatchers("/health/**").permitAll()
       .anyExchange().authenticated()
       .and()
