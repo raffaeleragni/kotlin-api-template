@@ -6,8 +6,10 @@ import com.jayway.jsonpath.JsonPath
 import org.hamcrest.CoreMatchers.`is`
 import org.hamcrest.MatcherAssert.assertThat
 import org.junit.jupiter.api.Test
+import org.junit.jupiter.api.assertThrows
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.web.server.LocalServerPort
+import org.springframework.web.client.HttpClientErrorException
 import org.springframework.web.client.RestTemplate
 import java.net.URI
 
@@ -27,5 +29,15 @@ class HealthVersionIT {
 
     val version = JsonPath.read<String>(response.body, "\$.components.version.details.version");
     assertThat("Version returned is the one defined in test profile", version, `is`("test-version"));
+  }
+
+  @Test
+  fun `security endpoints are disabled`() {
+    val restTemplate = RestTemplate();
+    val uriheap = URI("http://localhost:$randomServerPort/heapdump");
+    val urienv = URI("http://localhost:$randomServerPort/env");
+
+    assertThrows<HttpClientErrorException.Unauthorized>{ restTemplate.getForEntity(uriheap, String::class.java) }
+    assertThrows<HttpClientErrorException.Unauthorized>{ restTemplate.getForEntity(urienv, String::class.java) }
   }
 }

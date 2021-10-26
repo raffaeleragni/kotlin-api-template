@@ -71,6 +71,7 @@ cloud:
 
 management:
   endpoints:
+    enabled-by-default: false
     web:
       base-path: /
       exposure:
@@ -80,4 +81,7 @@ management:
         health: /health/check
   endpoint:
     health:
+      enabled: true
       show-details: always
+    info:
+      enabled: true
