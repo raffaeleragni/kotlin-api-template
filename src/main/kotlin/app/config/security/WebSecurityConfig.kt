@@ -32,6 +32,7 @@ class WebSecurityConfig(val manager: AuthenticationManager, val repo: SecurityCo
       .pathMatchers("/swagger-resources/**").permitAll()
       .pathMatchers("/v2/api-docs/**").permitAll()
       .pathMatchers("/health/**").permitAll()
+      .pathMatchers("/prometheus/**").permitAll()
       .anyExchange().authenticated()
       .and()
       .build()

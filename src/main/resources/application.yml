@@ -85,3 +85,5 @@ management:
       show-details: always
     info:
       enabled: true
+    prometheus:
+      enabled: true

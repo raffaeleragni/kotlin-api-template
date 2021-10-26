@@ -8,11 +8,14 @@ import org.hamcrest.MatcherAssert.assertThat
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertThrows
 import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.boot.test.autoconfigure.actuate.metrics.AutoConfigureMetrics
 import org.springframework.boot.web.server.LocalServerPort
+import org.springframework.http.HttpStatus
 import org.springframework.web.client.HttpClientErrorException
 import org.springframework.web.client.RestTemplate
 import java.net.URI
 
+@AutoConfigureMetrics
 @IntegrationTest
 class HealthVersionIT {
   @LocalServerPort
@@ -29,15 +32,22 @@ class HealthVersionIT {
 
     val version = JsonPath.read<String>(response.body, "\$.components.version.details.version");
     assertThat("Version returned is the one defined in test profile", version, `is`("test-version"));
+
+    val lb = URI("http://localhost:$randomServerPort/health/check/lb")
+    assertThat(restTemplate.getForEntity(lb, String::class.java).statusCode, `is`(HttpStatus.OK))
   }
 
   @Test
   fun `security endpoints are disabled`() {
-    val restTemplate = RestTemplate();
-    val uriheap = URI("http://localhost:$randomServerPort/heapdump");
-    val urienv = URI("http://localhost:$randomServerPort/env");
+    val restTemplate = RestTemplate()
+    var baseurl = "http://localhost:$randomServerPort"
+    var uriheap = URI("$baseurl/heapdump")
+    var urienv = URI("$baseurl/env")
+    var prometheus = URI("$baseurl/prometheus")
 
     assertThrows<HttpClientErrorException.Unauthorized>{ restTemplate.getForEntity(uriheap, String::class.java) }
     assertThrows<HttpClientErrorException.Unauthorized>{ restTemplate.getForEntity(urienv, String::class.java) }
+
+    assertThat(restTemplate.getForEntity(prometheus, String::class.java).statusCode, `is`(HttpStatus.OK))
   }
 }
