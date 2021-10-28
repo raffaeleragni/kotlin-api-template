@@ -45,5 +45,4 @@ class SecurityContextRepositoryTest {
 
     verify(manager).authenticate(PreAuthenticatedAuthenticationToken("", "Bearer $token"))
   }
-
 }

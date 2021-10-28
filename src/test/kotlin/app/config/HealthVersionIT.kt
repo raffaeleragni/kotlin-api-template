@@ -15,7 +15,6 @@ import org.springframework.web.client.HttpClientErrorException
 import org.springframework.web.client.RestTemplate
 import java.net.URI
 
-@AutoConfigureMetrics
 @IntegrationTest
 class HealthVersionIT {
   @LocalServerPort

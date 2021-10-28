@@ -43,6 +43,4 @@ class RedisJSONCodecTest {
     val value = codec.decodeValue(buffer)
     assertThat(value, `is`("value"))
   }
-
-
 }

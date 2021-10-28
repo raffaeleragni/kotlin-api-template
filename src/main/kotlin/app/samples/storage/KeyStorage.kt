@@ -29,4 +29,3 @@ class KeyStorage(
     sync[key] = value
   }
 }
-

@@ -27,6 +27,4 @@ class MessageRouterTest {
     verify(sns).sendNotification("message", "destination")
 
   }
-
-
 }
