@@ -1,7 +1,6 @@
 package app.config.security
 
 import org.springframework.http.HttpHeaders
-import org.springframework.security.core.Authentication
 import org.springframework.security.core.context.SecurityContext
 import org.springframework.security.core.context.SecurityContextImpl
 import org.springframework.security.web.authentication.preauth.PreAuthenticatedAuthenticationToken
@@ -9,7 +8,6 @@ import org.springframework.security.web.server.context.ServerSecurityContextRepo
 import org.springframework.stereotype.Component
 import org.springframework.web.server.ServerWebExchange
 import reactor.core.publisher.Mono
-import java.util.function.Function
 
 @Component
 class SecurityContextRepository(val manager: AuthenticationManager): ServerSecurityContextRepository {
@@ -20,9 +18,9 @@ class SecurityContextRepository(val manager: AuthenticationManager): ServerSecur
 
   override fun load(swe: ServerWebExchange): Mono<SecurityContext?>? {
     return Mono.justOrEmpty(swe.request.headers.getFirst(HttpHeaders.AUTHORIZATION))
-      .flatMap<SecurityContext?>(Function<String, Mono<out SecurityContext?>> { authHeader: String ->
-        manager.authenticate(PreAuthenticatedAuthenticationToken("", authHeader))
-          .map { authentication: Authentication? -> SecurityContextImpl(authentication) }
-      })
+      .flatMap<SecurityContext?> {
+        manager.authenticate(PreAuthenticatedAuthenticationToken("", it))
+          .map { authentication -> SecurityContextImpl(authentication) }
+      }
   }
 }

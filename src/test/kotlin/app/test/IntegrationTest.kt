@@ -10,5 +10,5 @@ import java.lang.annotation.Inherited
 @Inherited
 @AutoConfigureMetrics
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-@ActiveProfiles("test")
+@ActiveProfiles("test", "api")
 annotation class IntegrationTest

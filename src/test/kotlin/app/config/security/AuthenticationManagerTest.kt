@@ -37,7 +37,7 @@ class AuthenticationManagerTest {
   fun `valid token is not empty, but roles are`() {
     val token = "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyLCJyb2xlcyI6W119.yjh-DMdelyF78dO4LdVa--VDaJOcdk8OYJ-FOQnAkKA"
     val auth = PreAuthenticatedAuthenticationToken("user", token)
-    assertThat(manager.authenticate(auth).block()?.credentials, `is`(emptyList<String>()))
+    assertThat(manager.authenticate(auth).block()?.authorities, `is`(emptyList<Roles>()))
   }
 
   @Test
@@ -51,6 +51,7 @@ class AuthenticationManagerTest {
   fun `token with roles`() {
     val token = "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyLCJyb2xlcyI6WyJST0xFMSJdfQ.F0A_1bY5zItY27JTsdJz4t3PzRsI5ABrQlF_18G-rUo"
     val auth = PreAuthenticatedAuthenticationToken("user", token)
-    assertThat(manager.authenticate(auth).block()?.credentials, `is`(listOf("ROLE1")))
+    val role = manager.authenticate(auth).block()?.authorities?.first()
+    assertThat(role?.authority, `is`("ROLE1"))
   }
 }

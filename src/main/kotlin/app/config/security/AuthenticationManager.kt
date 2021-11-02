@@ -6,6 +6,7 @@ import io.jsonwebtoken.Jwt
 import io.jsonwebtoken.Jwts
 import org.springframework.security.authentication.ReactiveAuthenticationManager
 import org.springframework.security.core.Authentication
+import org.springframework.security.core.GrantedAuthority
 import org.springframework.security.web.authentication.preauth.PreAuthenticatedAuthenticationToken
 import org.springframework.stereotype.Component
 import reactor.core.publisher.Mono
@@ -21,8 +22,8 @@ class AuthenticationManager: ReactiveAuthenticationManager {
     // This implementation assumes to be behind a gateway that checks the signature already
     var tokenWithoutSig = extractJWTHeaderAndBodyFromHttpHeader(header)
     val token = parse(tokenWithoutSig)
-
-    return Mono.just(PreAuthenticatedAuthenticationToken(authentication.principal, rolesFromToken(token)))
+    val result = PreAuthenticatedAuthenticationToken(authentication.principal, token, rolesFromToken(token))
+    return Mono.just(result)
   }
 }
 
@@ -34,5 +35,5 @@ private fun extractJWTHeaderAndBodyFromHttpHeader(header: String) : String =
 private fun parse(token: String): Jwt<Header<*>, Claims> =
   Jwts.parserBuilder().build().parseClaimsJwt(token)
 
-private fun rolesFromToken(token: Jwt<Header<*>, Claims>): Any? =
-  (token.body["roles"] as List<String>)
+private fun rolesFromToken(token: Jwt<Header<*>, Claims>): List<GrantedAuthority> =
+  ((token.body["roles"] as List<String>).map {Roles.valueOf(it)} )
