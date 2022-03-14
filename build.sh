@@ -51,6 +51,14 @@ ensure_aws_cli() {
     --password-stdin $DOCKER_REPO
 }
 
+sonar_push() {
+  echo "Sonar host: \"$SONAR_HOST_URL\""
+  if [ "$SONAR_HOST_URL" == "" ]; then
+    return
+  fi
+  ./mvnw sonar:sonar -Dsonar.host.url=$SONAR_HOST_URL -Dsonar.login=$SONAR_LOGIN
+}
+
 docker_push() {
   if [ "$GIT_TAG" == "" ]; then
     echo "=== No tag set, not pushing any image ==="
@@ -87,4 +95,5 @@ docker_push() {
 sdkinstall
 build_project
 build_docker
+sonar_push
 docker_push
