@@ -54,4 +54,20 @@ class AuthenticationManagerTest {
     val role = manager.authenticate(auth).block()?.authorities?.first()
     assertThat(role?.authority, `is`("ROLE1"))
   }
+
+  @Test
+  fun `token with wrong roles property type`() {
+    val token = "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyLCJyb2xlcyI6MX0.-rYBWro5SLYwijt7M-lC74BXEOX_fD40xgLwHnoyhhA"
+    val auth = PreAuthenticatedAuthenticationToken("user", token)
+    var authorities = manager.authenticate(auth).block()?.authorities
+    assertThat(authorities, `is`(emptyList()))
+  }
+
+  @Test
+  fun `token with null roles`() {
+    val token = "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyLCJyb2xlcyI6bnVsbH0.OfdetsikzlLqsj4K3Xzp0uaQk9ZTbvc9SGWAmbGf0yM"
+    val auth = PreAuthenticatedAuthenticationToken("user", token)
+    var authorities = manager.authenticate(auth).block()?.authorities
+    assertThat(authorities, `is`(emptyList()))
+  }
 }

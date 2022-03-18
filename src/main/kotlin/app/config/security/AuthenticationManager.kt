@@ -35,5 +35,9 @@ private fun extractJWTHeaderAndBodyFromHttpHeader(header: String) : String =
 private fun parse(token: String): Jwt<Header<*>, Claims> =
   Jwts.parserBuilder().build().parseClaimsJwt(token)
 
+private fun jwtRolesAsStringList(token: Jwt<Header<*>, Claims>): List<String> =
+  try {token.body["roles"] as List<String>}
+  catch (ex: Exception) {emptyList()}
+
 private fun rolesFromToken(token: Jwt<Header<*>, Claims>): List<GrantedAuthority> =
-  ((token.body["roles"] as List<String>).map {Roles.valueOf(it)} )
+  (jwtRolesAsStringList(token).map {Roles.valueOf(it)} )
