@@ -13,7 +13,7 @@ services:
     command: [sh, -c, "rm -f /data/dump.rdb && redis-server --save ''"]  # disable persistence
     ports: ["6379:6379"]
   localstack:
-    image: localstack/localstack
+    image: localstack/localstack:0.12.20 
     container_name: localstack_service
     ports:
       - "4566:4566"
